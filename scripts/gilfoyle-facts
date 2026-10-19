@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+# Print a read-only snapshot of this machine as Markdown. Never uses sudo or the network.
+# Usage: gilfoyle-facts > "$GILFOYLE_HOME/facts/$(date +%F).md"
+set -uo pipefail
+export SYSTEMD_PAGER="" PAGER=cat LC_ALL=C
+
+has() { command -v "$1" >/dev/null 2>&1; }
+section() { printf '\n## %s\n\n```\n' "$1"; }
+endsec() { printf '```\n'; }
+# Run a command if its tool exists; otherwise say so.
+run() { if has "$1"; then "$@" 2>&1; else echo "($1 not installed)"; fi; }
+
+printf '# Facts: %s\n\nCollected %s by gilfoyle-facts (read-only).\n' "$(uname -n)" "$(date '+%F %T %z')"
+
+section "System"
+grep -E '^(PRETTY_NAME|VERSION_ID|BUILD_ID)=' /etc/os-release 2>/dev/null
+uname -srm
+run hostnamectl | grep -E 'Chassis|Hardware|Firmware' || true
+endsec
+
+section "CPU and memory"
+run lscpu | grep -E '^(Model name|Socket|Core|Thread|CPU\(s\))' || true
+free -h
+endsec
+
+section "PCI devices (GPU, network, audio) and drivers"
+if has lspci; then
+  lspci -k 2>/dev/null | grep -A3 -E 'VGA|3D|Display|Network|Ethernet|Audio' | grep -vE '^--$|Subsystem'
+else echo "(lspci not installed)"; fi
+endsec
+
+section "Storage"
+run lsblk -o NAME,SIZE,TYPE,FSTYPE,MOUNTPOINTS,MODEL
+endsec
+
+section "Mounts"
+run findmnt --real -o TARGET,SOURCE,FSTYPE,OPTIONS
+echo
+swapon --show 2>/dev/null || true
+endsec
+
+section "Boot"
+if [[ -d /sys/firmware/efi ]]; then echo "firmware: UEFI"; else echo "firmware: BIOS/legacy"; fi
+echo "cmdline: $(cat /proc/cmdline)"
+has bootctl && bootctl status --no-pager 2>/dev/null | grep -E 'Secure Boot|Product|Current Boot Loader|Default Boot Loader Entry' || true
+endsec
+
+section "Session"
+echo "desktop: ${XDG_CURRENT_DESKTOP:-unset}  session: ${XDG_SESSION_TYPE:-unset}"
+echo "login shell: $(getent passwd "$(id -un)" | cut -d: -f7)  term: ${TERM:-unset}"
+endsec
+
+section "Packages"
+if has pacman; then
+  echo "installed: $(pacman -Qq | wc -l)  explicit: $(pacman -Qqe | wc -l)  foreign (AUR/manual): $(pacman -Qqm | wc -l)"
+  for h in yay paru; do has "$h" && echo "AUR helper: $h"; done
+  last=$(grep 'starting full system upgrade' /var/log/pacman.log 2>/dev/null | tail -1)
+  echo "last full upgrade: ${last:-never logged}"
+  if has pacdiff; then echo "pacnew/pacsave files: $(pacdiff -o 2>/dev/null | wc -l)"; fi
+  for p in amd-ucode intel-ucode linux-firmware; do pacman -Q "$p" 2>/dev/null; done
+else
+  echo "(not a pacman system; gilfoyle-facts only knows pacman for now)"
+fi
+endsec
+
+section "Failed units"
+echo "system:"; systemctl --failed --no-legend --no-pager 2>&1
+echo "user:";   systemctl --user --failed --no-legend --no-pager 2>&1
+endsec

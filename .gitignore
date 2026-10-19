@@ -1,0 +1,4 @@
+# Machine memory never belongs in this repo (see memory.md).
+/memory/
+/seed/
+*.gilfoyle-*
