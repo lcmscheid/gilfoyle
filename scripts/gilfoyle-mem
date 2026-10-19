@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+# Locate and version gilfoyle's memory, without relying on shell state.
+# Usage: gilfoyle-mem path | status | commit <message> | log [n]
+set -euo pipefail
+
+home=${GILFOYLE_HOME:-${XDG_DATA_HOME:-$HOME/.local/share}/gilfoyle}
+
+need_memory() {
+  if [[ ! -f $home/MEMORY.md || ! -d $home/.git ]]; then
+    echo "gilfoyle-mem: no memory at $home (create it with gilfoyle-init)" >&2
+    exit 3
+  fi
+}
+
+case ${1:-} in
+  path)
+    echo "$home" ;;
+  status)
+    need_memory; git -C "$home" status --short ;;
+  commit)
+    need_memory
+    msg=${2:?gilfoyle-mem commit needs a message}
+    git -C "$home" add -A
+    if git -C "$home" diff --cached --quiet; then
+      echo "gilfoyle-mem: nothing to commit"
+    else
+      git -C "$home" commit -q -m "$msg"
+      git -C "$home" log -1 --oneline
+    fi ;;
+  log)
+    need_memory; git -C "$home" log --oneline -n "${2:-20}" ;;
+  *)
+    sed -n '2,3p' "$0" >&2; exit 2 ;;
+esac

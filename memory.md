@@ -1,13 +1,13 @@
 # Memory
 
-Gilfoyle's memory of one machine is a private git repo at `$GILFOYLE_HOME` (default `~/.local/share/gilfoyle`), created by `scripts/gilfoyle-init`. It never goes into the skill's repo. Push it only to a private remote.
+Gilfoyle's memory of one machine is a private git repo, created by `<skill>/scripts/gilfoyle-init`. `<skill>/scripts/gilfoyle-mem path` prints where it lives (default `~/.local/share/gilfoyle`; the user can override it with `GILFOYLE_HOME`). It never goes into the skill's repo. Push it only to a private remote.
 
 Memory is a **cache of leads**, not ground truth. Before a change depends on a remembered fact, re-check the fact on the live system and refresh its `verified` date.
 
 ## Layout
 
 ```
-$GILFOYLE_HOME/
+<memory>/
 ├── MEMORY.md              index, read every run: machine one-liner, in progress, open questions
 ├── machine.md             facts about this machine: hardware, disks, boot, stack, safety net
 ├── preferences.md         the user's standing choices and taste (portable to a new machine)
@@ -16,7 +16,7 @@ $GILFOYLE_HOME/
 ├── decisions/NNNN-slug.md decision records
 ├── journal/YYYY-MM.md     every change, append-only
 ├── notes/<topic>.md       research cache
-└── facts/YYYY-MM-DD.md    raw output of scripts/gilfoyle-facts
+└── facts/YYYY-MM-DD.md    raw output of gilfoyle-facts --save
 ```
 
 Keep `MEMORY.md` short (about 60 lines): it is an index, so details belong in the files it points to.
@@ -55,4 +55,4 @@ Passwords, tokens, private keys, Wi-Fi passphrases, recovery keys. Record **wher
 
 ## Seeding from another machine
 
-`scripts/gilfoyle-init --seed <other-memory-dir>` copies that machine's `preferences.md` and its `scope: portable` decisions into `seed/`. The setup flow walks through them with the user. Seeds are **leads** about taste, not facts about this hardware, so each one is re-confirmed and re-verified before it is applied.
+`<skill>/scripts/gilfoyle-init --seed <other-memory-dir>` copies that machine's `preferences.md` and its `scope: portable` decisions into `seed/`. The setup flow walks through them with the user. Seeds are **leads** about taste, not facts about this hardware, so each one is re-confirmed and re-verified before it is applied.

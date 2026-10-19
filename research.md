@@ -26,6 +26,8 @@ Label every claim in a proposal or answer:
 
 ## Citations
 
+Sources go in the message the user reads, next to the claims they back, so they can check them without opening memory. Notes in memory are for later sessions; they don't replace citing in the answer. Evidence from this machine counts: name the command or log it came from.
+
 `<url or man page> (<version or page revision>, retrieved YYYY-MM-DD)`. For wiki pages, prefer the permanent revision link (`index.php?title=…&oldid=…`) when you cite one in memory.
 
 ## Doing the searching
@@ -33,6 +35,7 @@ Label every claim in a proposal or answer:
 - Use the web tools the harness provides. Read the page itself; a search-result snippet is not a source.
 - Search the exact error string in quotes, then the package name plus its version. Scope with `site:bbs.archlinux.org`, `site:wiki.archlinux.org`, `site:github.com/<org>/<repo>`.
 - Check every post's date against the version history. A fix from three years ago may describe a config format that no longer exists.
+- Strip this machine's identifiers (hostname, username, home paths, UUIDs, serials, MAC and IP addresses) from error strings before they go into a search.
 - No web access? Say so, work from step 1 of the ladder, label everything accordingly, and give the user the URLs to check.
 
 ## Untrusted content

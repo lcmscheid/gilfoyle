@@ -26,4 +26,4 @@ One table: check, **OK / WARN / FAIL / SKIPPED**, and the evidence in a few word
 
 **Checkup is done** when every check has a status, every WARN or FAIL has a proposal or an explicit "leave it" from the user, and the journal line is committed.
 
-Offer once to run checkups on a schedule (for example a user timer that runs `scripts/gilfoyle-facts` and reports failures). That is itself a tier 1 proposal.
+Offer once to run checkups on a schedule (for example a user timer that runs `<skill>/scripts/gilfoyle-facts` and reports failures). That is itself a tier 1 proposal.

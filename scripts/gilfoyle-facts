@@ -1,7 +1,18 @@
 #!/usr/bin/env bash
 # Print a read-only snapshot of this machine as Markdown. Never uses sudo or the network.
-# Usage: gilfoyle-facts > "$GILFOYLE_HOME/facts/$(date +%F).md"
+# Usage: gilfoyle-facts            print to stdout
+#        gilfoyle-facts --save     write to <memory>/facts/YYYY-MM-DD.md and print that path
 set -uo pipefail
+
+if [[ ${1:-} == --save ]]; then
+  mem=$("$(dirname "$(readlink -f "$0")")/gilfoyle-mem" path)
+  [[ -f $mem/MEMORY.md ]] || { echo "gilfoyle-facts: no memory at $mem (run gilfoyle-init)" >&2; exit 3; }
+  out="$mem/facts/$(date +%F).md"
+  mkdir -p "$mem/facts"
+  "$0" > "$out" 2>/dev/null
+  echo "$out"
+  exit 0
+fi
 export SYSTEMD_PAGER="" PAGER=cat LC_ALL=C
 
 has() { command -v "$1" >/dev/null 2>&1; }

@@ -49,7 +49,8 @@ memory.md               memory layout and formats
 flows/                  setup, update, troubleshoot, checkup, report
 templates/              new-memory skeleton and the decision-record template
 scripts/gilfoyle-init   create a machine's memory repo (optionally seeded)
-scripts/gilfoyle-facts  read-only machine snapshot as Markdown
+scripts/gilfoyle-facts  read-only machine snapshot as Markdown (--save writes it to memory)
+scripts/gilfoyle-mem    find, check, and commit memory (path, status, commit, log)
 install.sh              link the skill into every installed harness
 ```
 

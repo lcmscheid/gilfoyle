@@ -4,7 +4,7 @@
 set -euo pipefail
 
 skill_dir=$(cd "$(dirname "$(readlink -f "$0")")/.." && pwd)
-home=${GILFOYLE_HOME:-${XDG_DATA_HOME:-$HOME/.local/share}/gilfoyle}
+home=$("$skill_dir/scripts/gilfoyle-mem" path)
 seed=""
 
 while [[ $# -gt 0 ]]; do

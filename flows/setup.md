@@ -4,10 +4,10 @@ Gilfoyle starts once the base OS boots, the network works, and an agent runs on 
 
 ## Steps
 
-1. **Create memory.** Run `scripts/gilfoyle-init`, adding `--seed <dir>` if the user has gilfoyle memory from another machine (see [`../memory.md`](../memory.md)).
-   *Done when* `$GILFOYLE_HOME/MEMORY.md` exists and the initial commit is made.
+1. **Create memory** (skip if Orient already did). Run `<skill>/scripts/gilfoyle-init`, adding `--seed <dir>` if the user has gilfoyle memory from another machine (see [`../memory.md`](../memory.md)).
+   *Done when* `<skill>/scripts/gilfoyle-mem status` runs cleanly.
 
-2. **Take stock.** Run `scripts/gilfoyle-facts > "$GILFOYLE_HOME/facts/$(date +%F).md"` (read-only, never uses sudo). Summarize it into `machine.md` as verified facts: hardware, GPU and driver, disks and filesystems, boot mode and loader, kernel, session and desktop, package counts. Flag anything odd: failed units, a missing microcode package, firmware that wants an update.
+2. **Take stock.** Run `<skill>/scripts/gilfoyle-facts --save` (read-only, never uses sudo); it prints the file it wrote. Summarize it into `machine.md` as verified facts: hardware, GPU and driver, disks and filesystems, boot mode and loader, kernel, session and desktop, package counts. Flag anything odd: failed units, a missing microcode package, firmware that wants an update.
    *Done when* every section of `machine.md` is filled in or marked `unknown` with the reason.
 
 3. **Interview.** Ask one topic at a time, and write the answers to `preferences.md`:

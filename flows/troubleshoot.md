@@ -19,7 +19,7 @@ Work from evidence. The goal is an honest account of what happened, not a story 
 
 5. **Hypotheses.** List the candidates, each with a read-only test that would confirm or kill it. Run the tests. Search the exact error strings with [`../research.md`](../research.md).
 
-6. **Report** what the evidence **proves**, separately from what you **infer**. Then do one of:
+6. **Report** what the evidence **proves**, separately from what you **infer**, citing the log line, command, or link behind each point ([`../research.md`](../research.md) § Citations). Then do one of:
    - propose the fix at the right layer (**Change**);
    - for an upstream bug: propose a workaround, add a `watchlist.md` item that triggers on the fixing release, and offer [`report.md`](report.md);
    - if it is still unclear: say so, and say what evidence would settle it (for example, "run this when it happens next").
