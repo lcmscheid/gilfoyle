@@ -16,6 +16,7 @@ A read-only health check (tier 0) that ends in a report and, where needed, propo
 | Config merges | `pacdiff -o` |
 | Orphans and foreign packages | `pacman -Qtd`, `pacman -Qm` |
 | Safety net | age of the newest snapshot and the newest user-data backup, per `machine.md` |
+| Bootloader | systemd-boot: loader version in `bootctl status` vs `pacman -Q systemd`; other loaders: research their update path |
 | Firmware | `fwupdmgr get-updates`, if fwupd is installed |
 | Watchlist | items whose trigger has fired or whose date has passed |
 | Memory drift | spot-check five facts from `machine.md` against the live system |

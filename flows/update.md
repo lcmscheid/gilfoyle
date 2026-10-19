@@ -24,6 +24,7 @@ Written for Arch, following the Arch Wiki's [System maintenance](https://wiki.ar
    - AUR packages needing a rebuild: `checkrebuild` if `rebuild-detector` is installed;
    - orphans: `pacman -Qtd`. Report them only; removing them is a separate proposal;
    - whether a reboot is needed (new kernel, systemd, or core libraries).
+   - bootloader lag: if the machine uses systemd-boot, compare the loader version in `bootctl status` ("Current Boot Loader … Product") with `pacman -Q systemd`. The automatic update has failed silently on real machines, so check it every time. Updating it (`bootctl update`, see `man bootctl`) is tier 3. With GRUB or another loader, research how that loader gets updated instead.
 
 7. **Watchlist.** For every item whose trigger package was updated, run its check and tick or refresh it.
 
