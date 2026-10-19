@@ -13,7 +13,7 @@ Primary target: Arch Linux. The flows cite Arch tooling (pacman, Arch News, the 
 ## Install
 
 ```bash
-git clone https://github.com/<you>/gilfoyle ~/projects/gilfoyle_skill
+git clone https://github.com/lcmscheid/gilfoyle ~/projects/gilfoyle_skill
 ~/projects/gilfoyle_skill/install.sh
 ```
 
